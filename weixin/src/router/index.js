@@ -5,9 +5,24 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '*',
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+  },
+  {
     path: '/',
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+  },
+  {
+    path: '/projectPersion',
+    name: 'projectPersion',
+    component: () => import(/* webpackChunkName: "projectPersion" */ '../views/projectPersion.vue')
+  },
+  {
+    path: '/result',
+    name: 'result',
+    component: () => import(/* webpackChunkName: "result" */ '../views/result.vue')
   },
 ]
 

@@ -42,11 +42,13 @@ export default {
   border-radius: 4px;
   justify-content: space-between;
   input {
+    display: block;
+    width: 208px;
     border: 0;
     font-size: 16px;
   }
   .limit {
-    padding-left: 10px;
+    // padding-left: 10px;
     font-size: 16px;
     color: @placeholder_color;
   }

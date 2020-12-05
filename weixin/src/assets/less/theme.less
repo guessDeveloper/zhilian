@@ -5,6 +5,7 @@
 @body_color:#F8F8F8;
 @placeholder_color:#C8C8C8;
 @input_border_color:#E8EEF4;
+@blue:@main_color;
 @p:0.5px;
 .onelineText{
   overflow: hidden;
@@ -17,7 +18,16 @@
   display: -moz-box;
   display: flex;
 }
-
+.backgroundSize(@r){
+  -webkit-background-size:@r;
+  -moz-background-size:@r;
+  -ms-background-size:@r;
+  background-size:@r;
+}
 //选择按钮
 @btn_box_border:#E6E6E6;
 @cancle_color:#666;
+
+//项目卡片
+@running:#64C318;
+@suspend:#EEA603;

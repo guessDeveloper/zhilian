@@ -13,7 +13,7 @@
     </div>
     <div class="btn-box">
       <button class="cancle">取消</button>
-      <button class="ok">确认</button>
+      <button class="ok" @click="add">确认</button>
     </div>
   </div>
 </template>
@@ -28,6 +28,11 @@ export default {
   },
   components: {
     myInput
+  },
+  methods: {
+    add() {
+      this.$emit('add', { list: '' })
+    }
   }
 }
 </script>
