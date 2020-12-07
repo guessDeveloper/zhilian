@@ -12,18 +12,42 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+    meta: {
+      title: '我的项目'
+    }
   },
+  //项目人员
   {
     path: '/projectPersion',
     name: 'projectPersion',
-    component: () => import(/* webpackChunkName: "projectPersion" */ '../views/projectPersion.vue')
+    component: () => import(/* webpackChunkName: "projectPersion" */ '../views/projectPersion.vue'),
+    meta: {
+      title: '项目人员'
+    }
   },
   {
     path: '/result',
     name: 'result',
     component: () => import(/* webpackChunkName: "result" */ '../views/result.vue')
   },
+  //
+  {
+    path: '/submit',
+    name: 'submit',
+    component: () => import(/* webpackChunkName: "submit" */ '../views/submit.vue'),
+    meta: {
+      title: '作答'
+    }
+  }, {
+    path: '/answer',
+    name: 'answer',
+    component: () => import(/* webpackChunkName: "answer" */ '../views/answer.vue'),
+    meta: {
+      title: '作答'
+    }
+  }
+
 ]
 
 const router = new VueRouter({

@@ -8,7 +8,7 @@
     <div class="work-list" v-show="workList.length!=0">
       <div class="search-big-box">
         <div class="search-box">
-          <span class=""></span><input type="text" placeholder="请输入搜索内容">
+          <span class="icon-search"></span><input type="text" placeholder="请输入搜索内容">
         </div>
       </div>
       <div class="chose-box">
@@ -92,12 +92,22 @@ export default {
   padding: 10px 0;
   background: #fff;
   .search-box {
+    .flexbox;
     width: 345px;
     height: 36px;
     line-height: 36px;
     margin: 0 auto;
     border-radius: 6px;
     background: #f7f7f7;
+    align-items: center;
+    .icon-search {
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: url(../assets/img/icon-search.png) no-repeat center center;
+      .backgroundSize(100%);
+      margin: 0px 5px 0 12px;
+    }
     input {
       border: 0;
       background: none;

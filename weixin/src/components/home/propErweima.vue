@@ -12,6 +12,7 @@
           <button class="btn"><span class="icon-erweima"></span><span class="btn-name">下载项目二维码</span></button>
         </div>
       </div>
+      <div class="close"></div>
     </div>
   </div>
 </template>
@@ -98,6 +99,13 @@ export default {
           .backgroundSize(100%);
         }
       }
+    }
+    .close {
+      width: 35px;
+      height: 35px;
+      margin: 20px auto 0;
+      background: url(../../assets/img/icon-close.png) no-repeat center center;
+      .backgroundSize(100%);
     }
   }
 }

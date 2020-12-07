@@ -1,30 +1,37 @@
 <template>
   <div class="page-box">
-    <div class="btn-box">
-      <button class="btn-result">生成结果</button>
-    </div>
-    <div class="chose-all-box">
-      <van-checkbox v-model="checkeALL" shape="square">全选</van-checkbox>
-      <div class="date-name">提交日期</div>
-    </div>
-    <van-checkbox-group v-model="result" ref="checkboxGroup">
-      <div class="chose-line">
-        <div class="persion-box">
-          <van-checkbox name="a" shape="square"></van-checkbox>
-          <div class="persion-img">
-
-          </div>
-          <div class="name-box">
-            <div class="name">大上海滩</div>
-            <div class="sex">男</div>
-          </div>
-        </div>
-        <div class="date">
-          2020-12-01 13:22
-        </div>
+    <div class="result-box" v-show="result.length!=0">
+      <div class="btn-box">
+        <button class="btn-result">生成结果</button>
       </div>
-    </van-checkbox-group>
+      <div class="chose-all-box">
+        <van-checkbox v-model="checkeALL" shape="square">全选</van-checkbox>
+        <div class="date-name">提交日期</div>
+      </div>
+      <van-checkbox-group v-model="result" ref="checkboxGroup">
+        <div class="chose-line" v-for="(item,index) in result" :key="index">
+          <div class="persion-box">
+            <van-checkbox :name="index" shape="square"></van-checkbox>
+            <div class="persion-img">
 
+            </div>
+            <div class="name-box">
+              <div class="name">大上海滩</div>
+              <div class="sex">男</div>
+            </div>
+          </div>
+          <div class="date">
+            2020-12-01 13:22
+          </div>
+        </div>
+      </van-checkbox-group>
+    </div>
+    <div class="empty" v-show="result.length==0">
+      <img src="../assets/img/persion-empty.png" alt="" class="img">
+      <div class="tip">
+        暂无项目人员
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -45,8 +52,11 @@ export default {
 <style lang="less" scoped>
 .page-box {
   width: 100%;
-  min-height: 100%;
-  background: #fff;
+  height: 100%;
+  .result-box {
+    min-height: 100%;
+    background: #fff;
+  }
   .btn-box {
     border-top: 8px solid @body_color;
     overflow: hidden;
@@ -111,6 +121,20 @@ export default {
     text-align: center;
     color: #666666;
     line-height: 78px;
+  }
+}
+.empty {
+  padding-top: 123px;
+  .img {
+    display: block;
+    width: 152px;
+    margin: 0 auto 0;
+  }
+  .tip {
+    text-align: center;
+    font-size: 16px;
+    color: @cancle_color;
+    line-height: 80px;
   }
 }
 </style>
