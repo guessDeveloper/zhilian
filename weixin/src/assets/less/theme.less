@@ -2,7 +2,7 @@
 @font_color:#333333;
 @focus_color:#ED2121;
 @subtitle_color:#999999;
-@body_color:#F8F8F8;
+@body_color:#F3F5F9;
 @placeholder_color:#C8C8C8;
 @input_border_color:#E8EEF4;
 @blue:@main_color;
@@ -24,6 +24,14 @@
   -ms-background-size:@r;
   background-size:@r;
 }
+.nouserselect{
+  -webkit-touch-callout:none;  /*系统默认菜单被禁用*/    
+  -webkit-user-select:none; /*webkit浏览器*/    
+  -khtml-user-select:none; /*早期浏览器*/    
+  -moz-user-select:none;/*火狐*/    
+  -ms-user-select:none; /*IE10*/    
+  user-select:none;  
+}
 //选择按钮
 @btn_box_border:#E6E6E6;
 @cancle_color:#666;
@@ -31,3 +39,7 @@
 //项目卡片
 @running:#64C318;
 @suspend:#EEA603;
+
+@Mcolor: #329d9e;
+@Acolor: #5da5ca;
+@Pcolor: #2193b3;

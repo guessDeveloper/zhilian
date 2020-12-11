@@ -10,7 +10,7 @@ Vue.config.productionTip = false
 
 // 长按事件
 Vue.directive('longtap', {
-  bind: function (el, binding) {
+  bind: function (el, binding, vonde) {
     const touch = new TouchCls(el, binding, 'longtap')
     touch.initialize()
   }

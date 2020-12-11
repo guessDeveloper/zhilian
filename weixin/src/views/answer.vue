@@ -9,7 +9,7 @@
       </div>
       <div class="box-list">
         <div class="box-item" :class="{on:item.check == true,off:MdataClick == MdataLimit}" v-for="(item,index) in Mdata" :key="index" @click="itemClick('Mdata',item.id)">
-          {{item.name}}
+          <span v-longtap="(e)=>swiperInit('M',item,e)">{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -19,7 +19,7 @@
       </div>
       <div class="box-list">
         <div class="box-item" :class="{on:item.check == true,off:AdataClick == AdataLimit}" v-for="(item,index) in Adata" :key="index" @click="itemClick('Adata',item.id)">
-          {{item.name}}
+          <span v-longtap="(e)=>swiperInit('A',item,e)">{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -28,15 +28,18 @@
         <span class="box-title">P-人际特点</span>（8）
       </div>
       <div class="box-list">
-        <div class="box-item" v-for="(item,index) in Pdata" :key="index" :class="{on:item.check == true,off:PdataClick == PdataLimit}" @click="itemClick('Pdata',item.id)" v-longTap="swiperInit">
-          {{item.name}}
+        <div class="box-item" v-for="(item,index) in Pdata" :key="index" :class="{on:item.check == true,off:PdataClick == PdataLimit}" @click="itemClick('Pdata',item.id)">
+          <span v-longtap="(e)=>swiperInit('P',item,e)">{{item.name}}</span>
         </div>
       </div>
-    </div>v-
+    </div>
+
     <div class="fix-bottom">下一步</div>
+    <longtapBox :type="swiperType" ref="swip" :index="swiperIndex"></longtapBox>
   </div>
 </template>
 <script>
+import longtapBox from '@/components/answer/swiper.vue'
 export default {
   data() {
     return {
@@ -70,8 +73,13 @@ export default {
       ],
       PdataClick: 0,
       PdataLimit: 4,
+      swiperType: 'M',
+      swiperIndex: 0,
     }
 
+  },
+  components: {
+    longtapBox,
   },
   methods: {
     itemClick(arryName, id) {
@@ -90,8 +98,10 @@ export default {
         }
       });
     },
-    swiperInit() {
-      console.log('长按')
+    swiperInit(type, s, e) {
+      this.swiperIndex = s.id
+      this.swiperType = type;
+      this.$refs.swip.showBox();
     }
   }
 
@@ -104,6 +114,7 @@ export default {
   min-height: 100%;
   padding-bottom: 60px;
   background: url(../assets/img/answer-bc.png) no-repeat center top;
+  .nouserselect;
   .fix-bottom {
     position: fixed;
     left: 0;
@@ -165,14 +176,12 @@ export default {
   }
 }
 .box {
-  @Mcolor: #329d9e;
-  @Acolor: #5da5ca;
-  @Pcolor: #2193b3;
   padding: 0 20px;
   .box-list {
     .flexbox;
     flex-wrap: wrap;
     justify-content: space-between;
+    .nouserselect;
     .box-item {
       width: 105px;
       height: 26px;
@@ -183,6 +192,10 @@ export default {
       border-radius: 6px;
       flex-shrink: 0;
       margin-bottom: 12px;
+      span {
+        display: block;
+        .nouserselect;
+      }
       &.off {
         color: #c8c8c8;
       }

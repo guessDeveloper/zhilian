@@ -46,6 +46,14 @@ const routes = [
     meta: {
       title: '作答'
     }
+  },
+  {
+    path: '/answerSelect',
+    name: 'answerSelect',
+    component: () => import(/* webpackChunkName: "answerSelect" */ '../views/answerSelect.vue'),
+    meta: {
+      title: '作答'
+    }
   }
 
 ]

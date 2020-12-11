@@ -13,10 +13,10 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import ECharts from "vue-echarts";
-import "echarts/lib/chart/pie";
-import Email from '@/components/common/email'
+// import Vue from 'vue'
+// import ECharts from "vue-echarts";
+// import "echarts/lib/chart/pie";
+// import Email from '@/components/common/email'
 export default {
   data() {
     return {
