@@ -5,110 +5,29 @@
     <div class="middle-box">
       <div class="box" :class="type">
         <van-swipe class="my-swipe" indicator-color="#0154A8" v-show="show" ref="mySwiper" :initial-swipe="index">
-          <van-swipe-item>
+          <van-swipe-item v-for="(item,index) in data" :key="index">
             <div class="item">
-              <div class="title">M1-1开放创新</div>
-              <div class="tip">定义：敢于打破常规，尝试新鲜事物，愿意为工作争取突破性进展。</div>
+              <div class="title">{{item.card_code}}{{item.card_name}}</div>
+              <div class="tip">定义：{{item.card_define}}</div>
               <div class="top">
                 <div class="part-title">
                   正向行为
                 </div>
-                <div class="content">
-                  常常打破常规，采用新颖的方法解决问题。<br>
-                  愿意尝试新事物，在工作中常常提出新观点。<br>
-                  愿意接受有挑战性的任务，希望在工作中取得新突破。<br>
+                <div class="content" v-html="item.card_note1">
+
                 </div>
               </div>
               <div class="bottom">
                 <div class="part-title">
                   负向行为
                 </div>
-                <div class="content">
-                  严格拘泥于规则，处理问题不够灵活。<br>
-                  对新事物开放接受度不够，固着于旧的思维方式。<br>
-                  满足于工作现状，不愿意寻求新变化。<br>
+                <div class="content" v-html="item.card_note2">
+
                 </div>
               </div>
             </div>
           </van-swipe-item>
-          <van-swipe-item>
-            <div class="item">
-              <div class="title">M1-1开放创新</div>
-              <div class="tip">定义：敢于打破常规，尝试新鲜事物，愿意为工作争取突破性进展。</div>
-              <div class="top">
-                <div class="part-title">
-                  正向行为
-                </div>
-                <div class="content">
-                  常常打破常规，采用新颖的方法解决问题。<br>
-                  愿意尝试新事物，在工作中常常提出新观点。<br>
-                  愿意接受有挑战性的任务，希望在工作中取得新突破。<br>
-                </div>
-              </div>
-              <div class="bottom">
-                <div class="part-title">
-                  负向行为
-                </div>
-                <div class="content">
-                  严格拘泥于规则，处理问题不够灵活。<br>
-                  对新事物开放接受度不够，固着于旧的思维方式。<br>
-                  满足于工作现状，不愿意寻求新变化。<br>
-                </div>
-              </div>
-            </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="item">
-              <div class="title">M1-1开放创新</div>
-              <div class="tip">定义：敢于打破常规，尝试新鲜事物，愿意为工作争取突破性进展。</div>
-              <div class="top">
-                <div class="part-title">
-                  正向行为
-                </div>
-                <div class="content">
-                  常常打破常规，采用新颖的方法解决问题。<br>
-                  愿意尝试新事物，在工作中常常提出新观点。<br>
-                  愿意接受有挑战性的任务，希望在工作中取得新突破。<br>
-                </div>
-              </div>
-              <div class="bottom">
-                <div class="part-title">
-                  负向行为
-                </div>
-                <div class="content">
-                  严格拘泥于规则，处理问题不够灵活。<br>
-                  对新事物开放接受度不够，固着于旧的思维方式。<br>
-                  满足于工作现状，不愿意寻求新变化。<br>
-                </div>
-              </div>
-            </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="item">
-              <div class="title">M1-1开放创新</div>
-              <div class="tip">定义：敢于打破常规，尝试新鲜事物，愿意为工作争取突破性进展。</div>
-              <div class="top">
-                <div class="part-title">
-                  正向行为
-                </div>
-                <div class="content">
-                  常常打破常规，采用新颖的方法解决问题。<br>
-                  愿意尝试新事物，在工作中常常提出新观点。<br>
-                  愿意接受有挑战性的任务，希望在工作中取得新突破。<br>
-                </div>
-              </div>
-              <div class="bottom">
-                <div class="part-title">
-                  负向行为
-                </div>
-                <div class="content">
-                  严格拘泥于规则，处理问题不够灵活。<br>
-                  对新事物开放接受度不够，固着于旧的思维方式。<br>
-                  满足于工作现状，不愿意寻求新变化。<br>
-                </div>
-              </div>
-            </div>
-          </van-swipe-item>
+
         </van-swipe>
       </div>
       <div class="close-btn" @click="close"></div>
@@ -131,7 +50,10 @@ export default {
       default: 'M'
     },
     index: {
-      default: 0
+
+    },
+    data: {
+      default: {}
     }
   },
   methods: {
@@ -232,7 +154,7 @@ export default {
         color: #fff;
         line-height: 20px;
         padding-bottom: 15px;
-        border-bottom: 2px solid #e6e6e6;
+        border-bottom: 2px solid #f3f3f3;
       }
     }
     .top {
@@ -284,6 +206,10 @@ export default {
           border-radius: 3px;
           background: #ff7b30;
         }
+      }
+      .content {
+        font-size: 10px;
+        line-height: 18px;
       }
     }
   }

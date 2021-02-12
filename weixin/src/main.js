@@ -2,12 +2,20 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Popup, Toast, Dialog } from 'vant';
+import { Popup, Notify, Dialog, Toast } from 'vant';
 import 'lib-flexible'
 import TouchCls from './assets/js/touch'
-Vue.use(Popup).use(Toast).use(Dialog)
+Vue.use(Popup).use(Dialog).use(Notify).use(Toast)
 Vue.config.productionTip = false
-
+import common from './assets/js/common';
+import https from './assets/js/https'
+import api from './assets/js/api'
+Vue.prototype.$util = common;
+Vue.prototype.$https = https;
+Vue.prototype.$api = api;
+import Vconsole from 'vconsole';
+new Vconsole();
+// localStorage.setItem('openId', 'oyGbzvzyGTlFFMb-S-wjUUOqwvsw')
 // 长按事件
 Vue.directive('longtap', {
   bind: function (el, binding, vonde) {

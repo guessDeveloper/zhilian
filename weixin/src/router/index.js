@@ -23,13 +23,16 @@ const routes = [
     name: 'projectPersion',
     component: () => import(/* webpackChunkName: "projectPersion" */ '../views/projectPersion.vue'),
     meta: {
-      title: '项目人员'
+      title: '选择人员'
     }
   },
   {
     path: '/result',
     name: 'result',
-    component: () => import(/* webpackChunkName: "result" */ '../views/result.vue')
+    component: () => import(/* webpackChunkName: "result" */ '../views/result.vue'),
+    meta: {
+      title: '查看结果'
+    }
   },
   //
   {
@@ -37,14 +40,15 @@ const routes = [
     name: 'submit',
     component: () => import(/* webpackChunkName: "submit" */ '../views/submit.vue'),
     meta: {
-      title: '作答'
+      title: 'MAP胜任力卡片建模'
     }
   }, {
     path: '/answer',
     name: 'answer',
     component: () => import(/* webpackChunkName: "answer" */ '../views/answer.vue'),
     meta: {
-      title: '作答'
+      title: 'MAP胜任力卡片建模',
+      keepAlive: true,
     }
   },
   {
@@ -52,7 +56,15 @@ const routes = [
     name: 'answerSelect',
     component: () => import(/* webpackChunkName: "answerSelect" */ '../views/answerSelect.vue'),
     meta: {
-      title: '作答'
+      title: 'MAP胜任力卡片建模'
+    }
+  },
+  {
+    path: "/projectClose",
+    name: 'projectClose',
+    component: () => import(/* webpackChunkName: "projectClose" */ '../views/projectClose.vue'),
+    meta: {
+      title: 'MAP胜任力卡片建模'
     }
   }
 

@@ -6,6 +6,15 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 const resolve = (dir) => path.join(__dirname, dir);
 const autoprefixer = require('autoprefixer')
+const cdn = {
+  css: [],
+  js: [
+    'https://cdn.bootcss.com/vue/2.5.17/vue.runtime.min.js',
+    'https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js',
+    'https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js',
+    'https://cdn.bootcss.com/axios/0.18.0/axios.min.js',
+  ]
+}
 module.exports = {
   // 选项...
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/', // 公共路径
@@ -15,11 +24,29 @@ module.exports = {
   lintOnSave: false, // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码
   runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
   productionSourceMap: !IS_PROD, // 生产环境的 source map
+  chainWebpack: config => {
+    // 生产环境配置
+    if (IS_PROD) {
+      // 生产环境注入cdn
+      config.plugin('html')
+        .tap(args => {
+          args[0].cdn = cdn;
+          return args;
+        });
+    }
+  },
   configureWebpack: config => {
     // 开启 gzip 压缩
     // 需要 npm i -D compression-webpack-plugin
     const plugins = [];
+    // config.externals = {
+    //   'vue': 'Vue',
+    //   'vuex': 'Vuex',
+    //   'vue-router': 'VueRouter',
+    //   'axios': 'axios'
+    // }
     if (IS_PROD) {
+
       plugins.push(
         new CompressionWebpackPlugin({
           filename: "[path].gz[query]",
@@ -88,9 +115,9 @@ module.exports = {
     // proxy: 'http://localhost:8080'  // 配置跨域处理,只有一个代理
     proxy: { //配置多个跨域
       "/Sev": {
-        target: 'http://apitest.youledui.com/',
-        changeOrigin: true,
-        ws: true,//websocket支持
+        target: 'http://1.119.40.66:8888/',
+        // changeOrigin: true,
+        // ws: true,//websocket支持
         // secure: false,
         pathRewrite: {
           "^/Sev": "/"

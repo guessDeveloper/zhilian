@@ -1,8 +1,8 @@
 <template>
   <div class="page">
     <div class="allret">
-      <img src="../assets/img/submit-all.png" alt="">
-      <div class="tip">您的结果已成功提交！</div>
+      <img src="../assets/img/all-close.png" alt="">
+      <div class="tip">{{name}}</div>
     </div>
   </div>
 </template>
@@ -10,8 +10,11 @@
 export default {
   data() {
     return {
-
+      name: ''
     }
+  },
+  mounted() {
+    this.name = window.decodeURIComponent(this.$route.query.name)
   }
 }
 </script>
@@ -19,6 +22,7 @@ export default {
 .page {
   width: 100%;
   height: 100%;
+  background: #fff;
   .allret {
     width: 100%;
     height: 100%;
@@ -26,10 +30,10 @@ export default {
     img {
       display: block;
       margin: 0 auto;
-      width: 155px;
+      width: 236px;
     }
     .tip {
-      font-size: 16px;
+      font-size: 18px;
       text-align: center;
       line-height: 80px;
       color: @cancle_color;

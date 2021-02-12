@@ -1,19 +1,18 @@
 <template>
-  <div class="input-box">
-    <input type="text" v-model="value" :placeholder="placeholder" @input="onInput"><span v-if="limit" class="limit">{{value.length}}/{{limit}}</span>
+  <div class="input-box" :class="{focus:isFocus}">
+    <input type="text" :value="value" :placeholder="placeholder" @input="onInput($event.target.value)" @focus="isFocus=true" @blur="isFocus=false"><span v-if="limit" class="limit">{{val.length}}/{{limit}}</span>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-
+      val: '',
+      isFocus: false
     }
   },
   props: {
-    value: {
-
-    },
+    value: {},
     placeholder: {
 
     },
@@ -22,12 +21,15 @@ export default {
     }
   },
   methods: {
-    onInput() {
+    onInput(value) {
       if (this.limit) {
-        console.log(this.value.length)
-        this.value.length > this.limit ? this.value = this.value.slice(0, this.limit) : ''
+        this.val = value
+        this.val.length > this.limit ? this.val = this.val.slice(0, this.limit) : ''
+        this.$emit('input', this.val)
+      } else {
+        this.$emit('input', value)
       }
-    }
+    },
   }
 }
 </script>
@@ -41,6 +43,17 @@ export default {
   border: 1px solid @input_border_color;
   border-radius: 4px;
   justify-content: space-between;
+  -webkit-transtion: all 0.3s ease;
+  transition: all 0.3s ease;
+  &.focus {
+    border-color: @main_color;
+  }
+  &.error {
+    border-color: #ff0001;
+  }
+  & + input:focus {
+    border-color: @main_color;
+  }
   input {
     display: block;
     width: 208px;
