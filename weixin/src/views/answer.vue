@@ -6,7 +6,7 @@
       <div class="tip"><span class="icon"></span>长按胜任力潜质卡片查看详细介绍</div>
       <div class="box M">
         <div class="title-box">
-          <span class="box-title">{{card_headers&&card_headers[0]['card_code']}}-{{card_headers&&card_headers[0]['card_name']}}</span>（{{Mdata.length}}）
+          <span class="box-title">{{card_headers[0]&&card_headers[0]['card_code']}}-{{card_headers[0]&&card_headers[0]['card_name']}}</span>（{{Mdata.length}}）
         </div>
         <div class="box-list">
           <div class="box-item" :class="{on:item.check == true,off:clickNum == totalLimit||item.disable==true}" v-for="(item,index) in Mdata" :key="index" @click="itemClick('Mdata',item.card_id)">
@@ -16,7 +16,7 @@
       </div>
       <div class="box A">
         <div class="title-box">
-          <span class="box-title">{{card_headers&&card_headers[1]['card_code']}}-{{card_headers&&card_headers[1]['card_name']}}</span>（{{Adata.length}}）
+          <span class="box-title">{{card_headers[1]&&card_headers[1]['card_code']}}-{{card_headers[1]&&card_headers[1]['card_name']}}</span>（{{Adata.length}}）
         </div>
         <div class="box-list">
           <div class="box-item" :class="{on:item.check == true,off:clickNum == totalLimit||item.disable==true}" v-for="(item,index) in Adata" :key="index" @click="itemClick('Adata',item.card_id)">
@@ -26,7 +26,7 @@
       </div>
       <div class="box P">
         <div class="title-box">
-          <span class="box-title">{{card_headers&&card_headers[2]['card_code']}}-{{card_headers&&card_headers[2]['card_name']}}</span>（{{Pdata.length}}）
+          <span class="box-title">{{card_headers[2]&&card_headers[2]['card_code']}}-{{card_headers[2]&&card_headers[2]['card_name']}}</span>（{{Pdata.length}}）
         </div>
         <div class="box-list">
           <div class="box-item" v-for="(item,index) in Pdata" :key="index" :class="{on:item.check == true,off:clickNum == totalLimit||item.disable==true}" @click="itemClick('Pdata',item.card_id)">
@@ -94,40 +94,50 @@ export default {
     console.log(this.$util.isInweixin)
     this.$util.setWXconfig();
     this.$util.getOpenCode(() => {
-      if (sessionStorage.getItem('hasPass')) {
-        this.showPass = false
-      } else {
-        this.showPass = true
-      }
-      if (sessionStorage.getItem('oldMdata')) {
-        // console.log(localStorage.getItem('oldMdata'))
-        this.Mdata = JSON.parse(sessionStorage.getItem('oldMdata'))
-        this.Adata = JSON.parse(sessionStorage.getItem('oldAdata'))
-        this.Pdata = JSON.parse(sessionStorage.getItem('oldPdata'))
-        this.clickNum = sessionStorage.getItem('clickNum')
-        this.getCardList(() => {
-          // this.dataSwith(this.data, 'old')
-        });
-      } else {
-        //   console.log(this.data)
-        // this.dataSwith(this.data)
-        if (sessionStorage.getItem('hasPass')) {
-          if (sessionStorage.getItem('is_repeat')) {
+      this.$https.post(this.$api.checkproject, {
+        pro_id: this.projectId,
+        identify: this.$util.Md5(this.projectId + 'map')
+      }).then(res => {
+        if (res.data.status == 0) {
+          if (sessionStorage.getItem('hasPass')) {
+            this.showPass = false
+          } else {
+            this.showPass = true
+          }
+          if (sessionStorage.getItem('oldMdata')) {
+            // console.log(localStorage.getItem('oldMdata'))
+            this.Mdata = JSON.parse(sessionStorage.getItem('oldMdata'))
+            this.Adata = JSON.parse(sessionStorage.getItem('oldAdata'))
+            this.Pdata = JSON.parse(sessionStorage.getItem('oldPdata'))
+            this.clickNum = sessionStorage.getItem('clickNum')
             this.getCardList(() => {
-              this.dataSwith(this.data, 'old')
+              // this.dataSwith(this.data, 'old')
             });
           } else {
-            this.getCardList(() => {
-              this.dataSwith(this.data, 'old')
-            });
+            //   console.log(this.data)
+            // this.dataSwith(this.data)
+            if (sessionStorage.getItem('hasPass')) {
+              if (sessionStorage.getItem('is_repeat')) {
+                this.getCardList(() => {
+                  this.dataSwith(this.data, 'old')
+                });
+              } else {
+                this.getCardList(() => {
+                  this.dataSwith(this.data, 'old')
+                });
+              }
+            } else {
+              this.getCardList(() => {
+                this.dataSwith(this.data)
+              });
+            }
+
           }
         } else {
-          this.getCardList(() => {
-            this.dataSwith(this.data)
-          });
+          this.$router.replace(`/projectClose?name=${window.encodeURIComponent(res.data.message)}`)
         }
+      })
 
-      }
     });
 
   },
@@ -159,7 +169,8 @@ export default {
         this.$dialog.confirm({
           // title: '温馨提示',
           message: '您已经提交过答案，重复作答将<br>覆盖上次数据，是否继续？',
-          className: 'alert'
+          className: 'alert',
+
         })
           .then(() => {
             // if(data.level_result_list)
@@ -185,7 +196,9 @@ export default {
         this.$dialog.confirm({
           // title: '温馨提示',
           message: '是否继续作答？',
-          className: 'alert'
+          className: 'alert',
+          confirmButtonText: '继续作答',
+          cancelButtonText: '重新作答',
         })
           .then(() => {
             // if(data.level_result_list)
@@ -226,26 +239,47 @@ export default {
       this.Mdata = [];
       this.Adata = [];
       this.Pdata = [];
+      // if (type == 'old') {
+      //   if (item.is_selected == 1) {
+      //     // item.check = true
+      //     // this.clickNum++
+      //     this.itemClick('Mdata', item.card_id)
+      //   }
+      // } else {
+      //   item.check = false
+      // }
       arry.forEach((item) => {
-        if (type == 'old') {
-          if (item.is_selected == 1) {
-            item.check = true
-            this.clickNum++
-          }
-        } else {
-          item.check = false
-        }
+
         item.disable = false
         if (new RegExp(this.card_headers[0].card_code).test(item.card_code)) {
           this.Mdata.push(item)
+
         }
         if (new RegExp(this.card_headers[1].card_code).test(item.card_code)) {
           this.Adata.push(item)
+
         }
         if (new RegExp(this.card_headers[2].card_code).test(item.card_code)) {
           this.Pdata.push(item)
         }
       })
+      if (type == 'old') {
+        arry.forEach((item) => {
+          if (item.is_selected == 1) {
+            // item.check = true
+            // this.clickNum++
+            if (new RegExp(this.card_headers[0].card_code).test(item.card_code)) {
+              this.itemClick('Mdata', item.card_id)
+            }
+            if (new RegExp(this.card_headers[1].card_code).test(item.card_code)) {
+              this.itemClick('Adata', item.card_id)
+            }
+            if (new RegExp(this.card_headers[2].card_code).test(item.card_code)) {
+              this.itemClick('Pdata', item.card_id)
+            }
+          }
+        })
+      }
     },
 
     itemClick(arryName, id) {

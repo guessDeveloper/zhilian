@@ -21,17 +21,18 @@
               <div class="item" v-for="(item,index) in oneList" :key="index">{{item.card_name}}</div>
             </div>
           </div>
-          <div class="canvas-bottom">
-            <div class="step-tip"><span class="icon"></span>长按图片可保存或分享</div>
-            <div class="step-box">
-              <div class="name">基础(等级3)</div>
-              <div class="arrow"></div>
-              <div class="name W">进阶(等级2)</div>
-              <div class="arrow"></div>
-              <div class="name T">卓越(等级1)</div>
-            </div>
+        </div>
+        <div class="canvas-bottom">
+          <div class="step-tip"><span class="icon"></span>长按图片可保存或分享</div>
+          <div class="step-box">
+            <div class="name">基础(等级3)</div>
+            <div class="arrow"></div>
+            <div class="name W">进阶(等级2)</div>
+            <div class="arrow"></div>
+            <div class="name T">卓越(等级1)</div>
           </div>
         </div>
+
       </div>
     </div>
     <div class="bottom">
@@ -70,13 +71,13 @@
             <span class="name">{{item.card_name}}</span>
           </div>
           <div class="table-content-item">
-            {{item.choose_rate}}
-          </div>
-          <div class="table-content-item">
-            {{item.level_avg}}
+            {{item.choose_rate}}%
           </div>
           <div class="table-content-item">
             {{item.level_sum}}
+          </div>
+          <div class="table-content-item">
+            {{item.level_avg}}
           </div>
           <div class="table-content-item">
             <div class="level" @click="levelSelect(item)">{{item.recommended_level}} <img src="../assets/img/level-arrow.png" alt=""></div>
@@ -97,15 +98,15 @@
       <button class="btn" @click="reback">重新选择人员</button>
       <button class="btn submit" @click="submit">发送数据至邮箱</button>
     </div>
-    <van-dialog v-model="show" show-cancel-button :before-close="emailOk">
+    <van-dialog v-model="show" show-cancel-button :before-close="emailOk" confirm-button-text="发送">
       <Email ref="sendEmail" />
     </van-dialog>
-    <van-dialog v-model="successSend">
+    <van-dialog v-model="successSend" confirm-button-text="确定">
       <img src="../assets/img/successSend.png" alt="" class="success-img">
       <div class="success-tip">邮件已发送，请注意查收</div>
     </van-dialog>
     <van-popup v-model="showPicker" round position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="showPicker = false" @confirm="levelOk" title="推荐级别" :default-index="pickerIndex" />
+      <van-picker show-toolbar :columns="columns" @cancel="showPicker = false" @confirm="levelOk" title="推荐等级" :default-index="pickerIndex" />
     </van-popup>
   </div>
 </template>
@@ -197,10 +198,12 @@ export default {
           }).then(res => {
             if (res.data.status == 0) {
               this.successSend = true
+              done()
             } else {
               this.$Notify(res.data.message)
+              done(false)
             }
-            done(true)
+
           })
           // done(true)
         }
@@ -223,7 +226,7 @@ export default {
           width: box.clientWidth,
           height: box.clientHeight,
           x: 0,
-          y: 100
+          y: 70
         })
           .then((canvas) => {
             _this.canvasUrl = canvas.toDataURL('image/png'); // 将canvas转成base64图片格式
@@ -246,7 +249,7 @@ export default {
         if (item.checked == true) {
           if (this.hasCheck == this.limit) {
             item.checked = false
-            this.$notify('模型内胜任力潜质数量已达到上限16');
+            this.$notify('已超过上限，最多可选择16个胜任潜质');
           } else {
             this.typeList();
           }
@@ -387,7 +390,7 @@ export default {
     }
     .canvas-inner {
       overflow: hidden;
-      height: 100%;
+      // height: 100%;
     }
     .canvas-title {
       display: block;

@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import qs from 'qs'
-const baseUrl = process.env.NODE_ENV === 'production' ? 'http://1.119.40.66:8888' : '/Sev'
-
+// const baseUrl = process.env.NODE_ENV === 'production' ? 'http://1.119.40.66:8888' : '/Sev'
+const baseUrl = process.env.NODE_ENV === 'production' ? '' : '/Sev'
 // 设置拦截
 const instance = Axios.create({
   headers: {

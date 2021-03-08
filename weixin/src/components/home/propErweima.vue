@@ -5,7 +5,7 @@
     <div class="erweima" id="erweimaBox">
       <div class="outer-box">
         <img :src="coverUrl" alt="" class="cover-img">
-        <div class="img-box" id="erweima">
+        <div class="img-box" id="erweima" ref="erweimabox">
           <div class="title">
             {{data.pro_name}}邀请函
           </div>
@@ -26,6 +26,7 @@
 <script>
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
+
 Vue.use(VueClipboard)
 export default {
   data() {
@@ -45,6 +46,68 @@ export default {
     },
     onCopy() {
       this.$notify('已将内容粘贴至剪贴板')
+    },
+    async createImg(cardData) {
+      // let cardData = this.data;
+      // console.log(cardData)
+      const loading = this.$toast.loading({
+        message: '生成二维码...',
+        forbidClick: true,
+      });
+      if (!cardData.qrcode_img) {
+        let result = await this.$https.get(this.$api.generaterQrImg, {
+          pro_id: cardData.pro_id,
+          identify: this.$util.Md5(cardData.pro_id + 'map'),
+        })
+        cardData.qrcode_img = result.data.qrcode_url
+      }
+      let qcImg = new Image();
+      qcImg.src = cardData.qrcode_img
+      qcImg.onload = () => {
+        this.$nextTick(() => {
+          // let box = document.querySelector('#erweima')
+          let box = this.$refs.erweimabox
+          console.log(box, 'eeeee', box.clientWidth, box.clientHeight)
+          let bigBox = document.querySelector('#erweimabox')
+          // console.log(html2canvas(box, {
+          //   useCORS: true,
+          //   allowTaint: true,
+          //   width: box.clientWidth,
+          //   height: box.clientHeight,
+          //   x: 0,
+          //   y: 0
+
+          // }))
+          html2canvas(box, {
+            useCORS: true,
+            allowTaint: true,
+            width: box.clientWidth,
+            height: box.clientHeight,
+            x: 0,
+            y: 0
+
+          })
+            .then((canvas) => {
+              let canvasUrl = canvas.toDataURL('image/png'); // 将canvas转成base64图片格式
+              console.log(canvasUrl, 'dddd')
+              this.$https.jsonPost(this.$api.downloadpic, {
+                pro_id: cardData.pro_id,
+                identify: this.$util.Md5(cardData.pro_id + 'map'),
+                base64Image: canvasUrl
+              }).then(res => {
+                if (res.data.status == 0) {
+                  this.$refs.erweima.showUrl(res.data.picture_download_url)
+                  loading.clear()
+                } else {
+                  this.$notify(res.data.message)
+                }
+              })
+
+            }).catch((e) => {
+              console.log(e, 'error')
+            });
+        })
+      }
     },
     //生成图片
     showUrl(img) {

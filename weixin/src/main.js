@@ -1,3 +1,4 @@
+// import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -15,7 +16,7 @@ Vue.prototype.$https = https;
 Vue.prototype.$api = api;
 import Vconsole from 'vconsole';
 new Vconsole();
-// localStorage.setItem('openId', 'oyGbzvzyGTlFFMb-S-wjUUOqwvsw')
+// localStorage.setItem('openId', 'oyGbzvxcj-R6gt9MC6sKKf0JcAXc')
 // 长按事件
 Vue.directive('longtap', {
   bind: function (el, binding, vonde) {

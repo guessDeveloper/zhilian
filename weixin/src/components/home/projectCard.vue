@@ -161,6 +161,7 @@ export default {
     //编辑名称
     editSucess(name) {
       this.showEdit = false
+
       this.$emit('editName', this.data.pro_id, name)
     },
     //关闭项目
@@ -195,7 +196,7 @@ export default {
       // });
       if (this.data.pro_status == 1) {
         console.log(this.data)
-        wx.updateAppMessageShareData({
+        wx.onMenuShareAppMessage({
           title: _this.data.qrcode_title, // 分享标题
           desc: _this.data.qrcode_sub_title, // 分享描述
           link: _this.data.qrcode_url, // 分享链接
@@ -227,6 +228,16 @@ export default {
     editOk(action, done) {
       if (action == 'confirm') {
         let newName = this.$refs.deit.getNewName()
+        if (newName == '') {
+          this.$notify('请输入项目名称')
+          done(false)
+          return false
+        }
+        if (/"|'|<|>|\//.test(newName)) {
+          this.$notify('不能输入",' + "',/,<,>特殊符号")
+          done(false)
+          return false
+        }
         this.$https.post(this.$api.editproject, {
           pro_id: this.data.pro_id,
           pro_name: newName,
@@ -238,6 +249,7 @@ export default {
             done()
           } else {
             this.$notify(res.data.message)
+            done(false)
           }
         })
       } else {

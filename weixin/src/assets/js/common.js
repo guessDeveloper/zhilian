@@ -26,9 +26,9 @@ export default {
       callback && callback()
     } else {
       if (code == null || code === '') {
-        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfab1cb0745c84b6b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+        window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfab1cb0745c84b6b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`)
       } else {
-        let resoult = await https.get($api.wxlogin, { code: code })
+        let resoult = await https.post($api.wxlogin, { code: code })
         console.log(resoult, 'ddddd')
         console.log(resoult.data.status, 'fffff')
         if (resoult.data.status == 0) {
@@ -41,12 +41,12 @@ export default {
   },
   //微信jsSdk 注册
   setWXconfig(callback) {
-    https.get($api.getJsAuthParams, {
+    https.post($api.getJsAuthParams, {
       signUrl: window.location.href.split('#')[0]
     }).then(res => {
 
       wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: 'wxfab1cb0745c84b6b', // 必填，公众号的唯一标识
         timestamp: res.data.timestamp, // 必填，生成签名的时间戳
         nonceStr: res.data.nonceStr, // 必填，生成签名的随机串

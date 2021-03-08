@@ -8,7 +8,7 @@
       </div>
       <label for="">项目描述</label>
       <div class="textarea-box" :class="{focus:textFocus}">
-        <textarea name="" id="" class="textarea" placeholder="请输入项目描述" v-model="description" @focus="textFocus=true" @blur="textFocus=false" maxlength="200"></textarea>
+        <textarea name="" id="" class="textarea" placeholder="请输入项目描述" v-model="description" @focus="textFocus=true" @blur="textareaBlur" maxlength="200"></textarea>
         <div class="limit">{{description.length}}/200</div>
       </div>
       <label for="">设置项目登录密码<span>*</span></label>
@@ -44,8 +44,9 @@ export default {
       description: '',
       pwd: '',
       pwdError: false,
-      limit: '6-8',
+      limit: '6-7',
       textFocus: false,
+      lock: false
     }
   },
   components: {
@@ -53,8 +54,17 @@ export default {
   },
   methods: {
     add() {
+
       if (this.name == '') {
         this.$notify('请输入项目名称')
+        return false
+      }
+      if (/"|'|<|>|\//.test(this.name) || /"|'|<|>|\//.test(this.description)) {
+        this.$notify('不能输入",' + "',/,<,>特殊符号")
+        return false
+      }
+      if (this.pwd == '') {
+        this.$notify('请输入项目登录密码')
         return false
       }
       if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(this.pwd)) {
@@ -62,6 +72,10 @@ export default {
         this.pwdError = true;
         return false
       }
+      if (this.lock == true) {
+        return false
+      }
+      this.lock = true
       //调用新建接口
       console.log(this.limit.split('-'))
       this.$https.post(this.$api.addproject, {
@@ -77,7 +91,13 @@ export default {
           this.pwdError = false;
           this.pwd = ''
           this.$emit('success')
+        } else {
+          this.$notify(res.data.message)
         }
+        this.lock = false
+      }).catch(() => {
+        this.lock = false
+        this.$notify('系统异常，请稍后重试')
       })
       // this.$emit('add', { list: '' })
     },
@@ -95,6 +115,11 @@ export default {
     },
     passChange() {
       this.pwdError = false
+    },
+    textareaBlur() {
+      this.textFocus = false
+      const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
+      window.scrollTo(0, Math.max(scrollHeight - 1, 0))
     }
 
   }

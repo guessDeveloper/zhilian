@@ -10,7 +10,7 @@
         <div class="search-big-box">
           <div class="search-box">
             <span class="icon-search"></span><input type="search" placeholder="请输入项目名称" v-model="searchContent" @input="onSearchClear">
-            <div class="search-btn" v-show="searchContent!=''" @click="getList"><img src="../assets/img/seach-btn.png" alt=""></div>
+            <div class="search-btn" v-show="searchContent!=''" @click="getList('search')"><img src="../assets/img/seach-btn.png" alt=""></div>
           </div>
         </div>
         <div class="chose-box">
@@ -81,7 +81,6 @@ export default {
             {
               text: '-',
               children: [
-                { text: "6" },
                 { text: '7' },
                 { text: '8' },
                 { text: '9' },
@@ -128,6 +127,7 @@ export default {
         this.getList('init');
       });
     });
+    // this.getList('init');
   },
   methods: {
     add(item) {
@@ -145,11 +145,11 @@ export default {
       this.selectName = value.text;
       this.selectValue = value.value
       this.select = false
-      this.getList();
+      this.getList('search');
     },
     onSearchClear() {
       if (this.searchContent == '') {
-        this.getList()
+        this.getList('search')
       }
     },
     newProjectHidden() {
@@ -168,6 +168,7 @@ export default {
     async erweimaShow(cardData) {
       this.showErweima = true
       this.erweimaData = cardData;
+      // this.$refs.erweima.createImg(cardData)
       // let getImage = this.$https.get(this.$api.generaterQrImg, {
       //   pro_id: cardData.pro_id,
       //   identify: this.$util.Md5(cardData.pro_id + 'map'),
@@ -187,22 +188,23 @@ export default {
       qcImg.src = cardData.qrcode_img
       qcImg.onload = () => {
         this.$nextTick(() => {
-          let box = document.querySelector('#erweima')
-          let bigBox = document.querySelector('#erweimaBox')
-          console.log(bigBox.offsetTop)
-          // setTimeout(() => {
+          // let box = document.querySelector('#erweima')
+          let box = this.$refs.erweima.$refs.erweimabox
+          console.log(box, 'eeeee', box.clientWidth, box.clientHeight)
+          let bigBox = document.querySelector('#erweimabox')
+
           html2canvas(box, {
             useCORS: true,
             allowTaint: true,
             width: box.clientWidth,
             height: box.clientHeight,
-            // x: -bigBox.offsetLeft,
-            // y: bigBox.offsetTop / 3
-            scrollX: 0,
-            scrollY: 0,
+            x: 0,
+            y: 0
+
           })
             .then((canvas) => {
               let canvasUrl = canvas.toDataURL('image/png'); // 将canvas转成base64图片格式
+              console.log(canvasUrl)
               this.$https.jsonPost(this.$api.downloadpic, {
                 pro_id: cardData.pro_id,
                 identify: this.$util.Md5(cardData.pro_id + 'map'),
@@ -216,8 +218,10 @@ export default {
                 }
               })
 
+            }).catch((e) => {
+              console.log(e, 'error')
             });
-          // }, 200)
+
 
         })
       }
@@ -262,6 +266,7 @@ export default {
     },
     //获取项目列表
     getList(type) {
+      console.log(type)
       const loading = this.$toast.loading({
         message: '加载中...',
         forbidClick: true,
@@ -280,10 +285,10 @@ export default {
           this.share_jpg = res.data.share_jpg
           let _this = this;
 
-          wx.updateAppMessageShareData({
+          wx.onMenuShareAppMessage({
             title: _this.share_title, // 分享标题
             desc: _this.share_sub_title, // 分享描述
-            link: window.location.href, // 分享链接
+            link: window.location.origin + window.location.pathname, // 分享链接
             imgUrl: _this.share_jpg, // 分享图标
             // type: 'video', // 分享类型,music、video或link，不填默认为link
             // dataUrl: getForwardUrl, // 如果type是music或video，则要提供数据链接，默认为空
@@ -300,7 +305,10 @@ export default {
         if (type == "init") {
           this.pageInit = true;
         }
-
+        console.log(this.workList.length, type, '3333')
+        if (this.workList.length == 0 && type == 'search') {
+          this.$notify('未查找到项目')
+        }
         loading.close()
       })
     },
@@ -308,10 +316,10 @@ export default {
     weixinhide() {
       this.weixinshare = false
       let _this = this;
-      wx.updateAppMessageShareData({
+      wx.onMenuShareAppMessage({
         title: _this.share_title, // 分享标题
         desc: _this.share_sub_title, // 分享描述
-        link: window.location.href, // 分享链接
+        link: window.location.origin + window.location.pathname, // 分享链接
         imgUrl: _this.share_jpg, // 分享图标
         // type: 'video', // 分享类型,music、video或link，不填默认为link
         // dataUrl: getForwardUrl, // 如果type是music或video，则要提供数据链接，默认为空

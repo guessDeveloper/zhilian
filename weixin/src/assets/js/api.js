@@ -12,4 +12,5 @@ export default {
   showresult: '/api/showresult', //展示结果
   downloadpic: '/api/downloadpic', //获取下载图片
   generaterQrImg: '/api/generateQrImg', //获取图片二维码
+  checkproject: '/api/checkproject', //检查项目
 }

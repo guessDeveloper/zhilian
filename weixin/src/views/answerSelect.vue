@@ -320,13 +320,13 @@ export default {
     //提交请求
     submitAjax() {
       let result_list = [{
-        level_id: '1',
+        level_id: '3',
         card_id: this.reaturnIdArray(this.selectedA).join(',')
       }, {
         level_id: '2',
         card_id: this.reaturnIdArray(this.selectedB).join(',')
       }, {
-        level_id: '3',
+        level_id: '1',
         card_id: this.reaturnIdArray(this.selectedC).join(',')
       },]
       this.$https.jsonPost(this.$api.submitresult, {

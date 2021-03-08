@@ -1,6 +1,6 @@
 <template>
   <div class="input-box" :class="{focus:isFocus}">
-    <input type="text" :value="value" :placeholder="placeholder" @input="onInput($event.target.value)" @focus="isFocus=true" @blur="isFocus=false"><span v-if="limit" class="limit">{{val.length}}/{{limit}}</span>
+    <input type="text" :value="value" :placeholder="placeholder" @input="onInput($event.target.value)" @focus="isFocus=true" @blur="blur"><span v-if="limit" class="limit">{{val.length}}/{{limit}}</span>
   </div>
 </template>
 <script>
@@ -30,6 +30,11 @@ export default {
         this.$emit('input', value)
       }
     },
+    blur() {
+      this.isFocus = false
+      const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
+      window.scrollTo(0, Math.max(scrollHeight - 1, 0))
+    }
   }
 }
 </script>
