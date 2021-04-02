@@ -127,7 +127,7 @@ export default {
         this.getList('init');
       });
     });
-    // this.getList('init');
+    this.getList('init');
   },
   methods: {
     add(item) {

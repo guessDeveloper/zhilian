@@ -16,7 +16,7 @@ Vue.prototype.$https = https;
 Vue.prototype.$api = api;
 // import Vconsole from 'vconsole';
 // new Vconsole();
-// localStorage.setItem('openId', 'oyGbzvxcj-R6gt9MC6sKKf0JcAXc')
+localStorage.setItem('openId', 'oyGbzvxcj-R6gt9MC6sKKf0JcAXc')
 // 长按事件
 Vue.directive('longtap', {
   bind: function (el, binding, vonde) {

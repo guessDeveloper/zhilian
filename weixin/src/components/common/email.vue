@@ -5,7 +5,7 @@
       <div class="tip">请输入收件人邮箱<span>*</span></div>
       <div class="input-list">
         <div class="input-box" v-for="(item,index) in inputList" :key="index" :class="{error:item.error}">
-          <input type="text" v-model="item.value"> <span class="cancle" v-show="inputList.length!==1" @click="remove(index)"></span><span class="add" v-show="inputList.length-1==index" @click="add"></span>
+          <input type="text" v-model="item.value"> <span class="cancle" v-show="inputList.length!==1" @click="remove(index)"></span><span class="add" v-show="inputList.length-1==index&&index<9" @click="add"></span>
         </div>
       </div>
     </div>
